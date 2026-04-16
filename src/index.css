@@ -1,0 +1,282 @@
+@import url('https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&display=swap');
+@import "katex/dist/katex.min.css";
+
+:root {
+  --sketch-bg: #f8f9fa;
+  --sketch-grid: #e1e8ed;
+  --sketch-ink: #1a365d;
+  --sketch-accent: #3182ce;
+  --sketch-red: #e53e3e;
+  --sketch-panel: rgba(255, 255, 255, 0.95);
+  --sketch-border: #2d3748;
+  
+  --font-main: 'Pretendard', sans-serif;
+  --font-sketch: 'Gaegu', cursive;
+}
+
+/* 텍스트 가독성을 위한 외곽선 필터 */
+.text-halo {
+  paint-order: stroke;
+  stroke: white;
+  stroke-width: 4px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background-color: var(--sketch-bg);
+  background-image: 
+    linear-gradient(var(--sketch-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--sketch-grid) 1px, transparent 1px);
+  background-size: 30px 30px;
+  color: var(--sketch-ink);
+  font-family: var(--font-main);
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  height: 100vh;
+}
+
+.sketch-border {
+  border: 2px solid var(--sketch-border);
+  border-radius: 4px 12px 6px 10px / 12px 5px 10px 4px;
+  position: relative;
+  background: white;
+}
+
+.sidebar {
+  width: 280px;
+  height: 100vh;
+  background: var(--sketch-panel);
+  border-right: 2px solid var(--sketch-border);
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  flex-shrink: 0;
+}
+
+.sidebar-header {
+  margin-bottom: 24px;
+  border-bottom: 2px dashed var(--sketch-grid);
+  padding-bottom: 12px;
+}
+
+.sidebar-group-title {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--sketch-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 16px 0 8px 0;
+}
+
+.tree-item {
+  padding: 8px 10px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s;
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tree-item:hover { background: var(--sketch-grid); }
+.tree-item[data-active='true'] { color: var(--sketch-accent); background: rgba(49, 130, 206, 0.1); }
+
+.tree-sub-item {
+  padding: 5px 10px 5px 28px;
+  font-size: 12px;
+  opacity: 0.7;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tree-sub-item[data-active='true'] { opacity: 1; color: var(--sketch-accent); font-weight: 800; }
+
+.main-layout {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  min-width: 0;
+}
+
+.dashboard-header {
+  height: 70px;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.7);
+  border-bottom: 1px solid var(--sketch-grid);
+  flex-shrink: 0;
+}
+
+.dashboard-content {
+  flex: 1;
+  padding: 24px;
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 24px;
+  overflow: hidden; /* 전체 스크롤 방지 */
+}
+
+.canvas-area {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 0;
+}
+
+.canvas-container {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow: hidden;
+}
+
+.raster-canvas {
+  max-width: 100%;
+  max-height: 100%;
+  aspect-ratio: 1;
+}
+
+.inspector-area {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto; /* 우측 패널만 스크롤 허용 */
+  padding-right: 8px;
+}
+
+.sketch-card {
+  padding: 20px;
+  flex-shrink: 0;
+}
+
+.math-box {
+  background: #fdfdfd;
+  border-left: 4px solid var(--sketch-accent);
+  padding: 12px;
+  margin-top: 8px;
+  overflow-x: auto; /* 수식 넘침 방지 */
+  font-size: 0.9rem;
+}
+
+.concept-note {
+  background: #fffdf0; /* 종이 느낌 */
+  border: 1px solid #e2e8f0;
+  padding: 15px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.concept-note h4 {
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--sketch-ink);
+}
+
+.range-input {
+  width: 100%;
+  accent-color: var(--sketch-accent);
+  cursor: pointer;
+}
+
+.primary-btn {
+  background: var(--sketch-ink);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: transform 0.1s;
+}
+
+.primary-btn:active { transform: scale(0.98); }
+
+.algorithm-tab-btn {
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.metric-box {
+  background: white;
+  border-bottom: 3px solid var(--sketch-ink);
+  padding: 12px;
+  text-align: center;
+}
+
+.metric-label {
+  font-family: var(--font-sketch);
+  font-size: 1.1rem;
+  color: var(--sketch-accent);
+  margin-bottom: 4px;
+}
+
+.metric-value {
+  font-family: monospace;
+  font-size: 1.4rem;
+  font-weight: 900;
+}
+
+.trace-row {
+  display: grid;
+  grid-template-columns: 40px 1fr 1fr;
+  gap: 10px;
+  padding: 8px;
+  border-bottom: 1px dashed var(--sketch-grid);
+  font-size: 0.8rem;
+}
+
+.trace-row[data-current='true'] {
+  background: rgba(49, 130, 206, 0.05);
+  border-left: 3px solid var(--sketch-accent);
+  font-weight: 700;
+}
+
+.substitution-math {
+  font-size: 0.75rem;
+  color: var(--sketch-muted);
+  font-family: serif;
+  margin-top: 4px;
+  padding-left: 10px;
+  border-left: 2px solid var(--sketch-grid);
+}
+
+.param-badge {
+  background: var(--sketch-ink);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.9rem;
+}
