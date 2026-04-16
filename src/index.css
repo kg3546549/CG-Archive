@@ -236,10 +236,13 @@ body {
 }
 
 .metric-label {
-  font-family: var(--font-sketch);
-  font-size: 1.1rem;
+  font-family: var(--font-main);
+  font-size: 0.75rem;
+  font-weight: 800;
   color: var(--sketch-accent);
-  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 2px;
 }
 
 .metric-value {
