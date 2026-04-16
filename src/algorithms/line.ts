@@ -21,7 +21,13 @@ export const buildDdaLine = (start: Point, end: Point): LineStep[] => {
       {
         point: start,
         note: '시작점과 끝점이 같은 한 픽셀',
-        values: { x: start.x, y: start.y },
+        values: {
+          index: 0,
+          xFloat: start.x,
+          yFloat: start.y,
+          xIncrement: 0,
+          yIncrement: 0,
+        },
       },
     ]
   }
@@ -35,10 +41,11 @@ export const buildDdaLine = (start: Point, end: Point): LineStep[] => {
 
     return {
       point: { x: Math.round(x), y: Math.round(y) },
-      note: `${index}번째 샘플을 가장 가까운 픽셀로 반올림`,
+      note: `실수 좌표 (${roundForDisplay(x)}, ${roundForDisplay(y)})를 가장 가까운 픽셀로 반올림`,
       values: {
-        x: roundForDisplay(x),
-        y: roundForDisplay(y),
+        index,
+        xFloat: roundForDisplay(x),
+        yFloat: roundForDisplay(y),
         xIncrement: roundForDisplay(xIncrement),
         yIncrement: roundForDisplay(yIncrement),
       },
@@ -61,27 +68,44 @@ export const buildBresenhamLine = (start: Point, end: Point): LineStep[] => {
 
   while (true) {
     const errorBefore = error
+    const doubledError = 2 * error
+    const moveX = doubledError > -dy
+    const moveY = doubledError < dx
+    let nextError = error
+
+    if (moveX) nextError -= dy
+    if (moveY) nextError += dx
+
     points.push({
       point: { x: x0, y: y0 },
-      note: `${index}번째 정수 격자점 선택`,
+      note: moveX && moveY
+        ? '오차가 대각선 이동을 선택'
+        : moveX
+          ? '오차가 x 방향 이동을 선택'
+          : moveY
+            ? '오차가 y 방향 이동을 선택'
+            : '마지막 픽셀',
       values: {
+        index,
         error: errorBefore,
+        doubledError,
+        nextError,
         dx,
         dy,
+        moveX: moveX ? 1 : 0,
+        moveY: moveY ? 1 : 0,
       },
     })
 
     if (x0 === x1 && y0 === y1) break
 
-    const doubledError = 2 * error
-    if (doubledError > -dy) {
-      error -= dy
+    if (moveX) {
       x0 += sx
     }
-    if (doubledError < dx) {
-      error += dx
+    if (moveY) {
       y0 += sy
     }
+    error = nextError
     index += 1
   }
 

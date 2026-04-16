@@ -129,7 +129,7 @@ body {
   flex: 1;
   padding: 24px;
   display: grid;
-  grid-template-columns: 1fr 340px;
+  grid-template-columns: minmax(420px, 1fr) clamp(460px, 34vw, 620px);
   gap: 24px;
   overflow: hidden; /* 전체 스크롤 방지 */
 }
@@ -151,10 +151,29 @@ body {
   overflow: hidden;
 }
 
+.playback-bar {
+  background: white;
+  padding: 12px 14px;
+  flex-shrink: 0;
+}
+
+.playback-main-btn {
+  min-width: 128px;
+}
+
+.playback-reset-btn {
+  background: var(--sketch-grid);
+  color: var(--sketch-ink);
+  min-width: 44px;
+  padding-inline: 12px;
+}
+
 .raster-canvas {
   max-width: 100%;
   max-height: 100%;
   aspect-ratio: 1;
+  touch-action: none;
+  user-select: none;
 }
 
 .inspector-area {
@@ -170,18 +189,70 @@ body {
   flex-shrink: 0;
 }
 
+.primer-card {
+  background:
+    linear-gradient(135deg, oklab(0.99 0.006 0.03), oklab(0.95 -0.01 -0.015));
+}
+
+.primer-copy {
+  color: var(--sketch-ink);
+  font-size: 0.8rem;
+  line-height: 1.7;
+}
+
+.learning-ladder > div {
+  display: grid;
+  gap: 4px;
+  min-height: 62px;
+  align-content: center;
+  justify-items: center;
+  border: 1px dashed var(--sketch-grid);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.72);
+  text-align: center;
+}
+
+.learning-ladder b {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: var(--sketch-ink);
+  color: white;
+  font-size: 0.72rem;
+}
+
+.learning-ladder span {
+  color: var(--sketch-accent);
+  font-size: 0.68rem;
+  font-weight: 800;
+}
+
 .math-box {
   background: #fdfdfd;
   border-left: 4px solid var(--sketch-accent);
-  padding: 12px;
+  padding: 16px 18px;
   margin-top: 8px;
   overflow-x: auto; /* 수식 넘침 방지 */
-  font-size: 0.9rem;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  white-space: nowrap;
+}
+
+.math-box .katex-display {
+  margin: 0;
+  text-align: left;
+}
+
+.math-box .katex {
+  text-align: left;
+  white-space: nowrap;
 }
 
 .concept-note {
-  background: #fffdf0; /* 종이 느낌 */
-  border: 1px solid #e2e8f0;
+  background: oklab(0.98 0.01 0.04); /* 종이 느낌 */
+  border: 1px solid oklab(0.9 0.004 0.02);
   padding: 15px;
   border-radius: 8px;
   font-size: 0.85rem;
@@ -262,10 +333,37 @@ body {
   font-family: var(--font-main);
 }
 
+@media (max-width: 1180px) {
+  .dashboard-content {
+    grid-template-columns: 1fr;
+    overflow-y: auto;
+  }
+
+  .inspector-area {
+    overflow-y: visible;
+    padding-right: 0;
+  }
+}
+
 .trace-row[data-current='true'] {
   background: rgba(49, 130, 206, 0.05);
   border-left: 3px solid var(--sketch-accent);
   font-weight: 800;
+}
+
+.guide-list {
+  font-size: 0.78rem;
+  line-height: 1.55;
+}
+
+.algorithm-hint {
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  background: oklab(0.93 -0.02 -0.03);
+  color: var(--sketch-ink);
+  font-size: 0.75rem;
+  line-height: 1.55;
 }
 
 .substitution-math {
